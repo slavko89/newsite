@@ -10,6 +10,7 @@ $title = "";
 //$_SESSION['uid'] = 1;
 //unset($_SESSION['uid']);
 
+
 switch ($url) {
 	case '/':
 		$template = 'home';
@@ -22,6 +23,8 @@ switch ($url) {
 		
 		if (is_post()) {
 			User::login();
+			
+			is_log_database();
 		}
 		
 		break;	
