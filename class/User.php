@@ -3,9 +3,19 @@
 
 class User {
 	
-	public static function login()
+	public static function login($email, $password)
 	{
-		d($_POST);
+		$row = Db::findOne('user', [
+			'email'		=> $email, 
+			'password'	=> md5($password),
+		]);
+		
+		if (!empty($row)) {
+			$_SESSION['uid'] = $row['id'];
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public static function registration()
@@ -15,7 +25,7 @@ class User {
 	
 	public static function logout()
 	{
-		
+		unset($_SESSION['uid']);
 	}
 	
 }

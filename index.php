@@ -1,14 +1,17 @@
 <?php
 session_start();
+include ('/config.php'); 
 include ('/func.php'); 
 include ('/class/User.php'); 
+include ('/class/Db.php'); 
+
+Db::connect();
 
 $url 		= $_SERVER['REQUEST_URI'];	
 $template 	= '';
 $title = "";
 
-//$_SESSION['uid'] = 1;
-//unset($_SESSION['uid']);
+//d($_SESSION);
 
 
 switch ($url) {
@@ -22,9 +25,9 @@ switch ($url) {
 		$title = 'Логін';
 		
 		if (is_post()) {
-			User::login();
-			
-			is_log_database();
+			if(User::login($_POST['email'], $_POST['password'])) {
+				header("location: /");
+			} 
 		}
 		
 		break;	
@@ -37,6 +40,11 @@ switch ($url) {
 	case '/registration':
 	    $template = 'registration';
 		$title = 'Реєстрація';
+		break;	
+	
+	case '/logout':
+	    User::logout();
+		header("location: /login");
 		break;	
 	
 	default :
@@ -96,7 +104,7 @@ switch ($url) {
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                 </li>

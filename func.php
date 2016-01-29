@@ -1,12 +1,13 @@
 <?php 
 
-
-
-function d($array) {
+function d($array, $die=true) {
 	print('<pre>');
 	print_r($array);
 	print('</pre>');
 	
+	if ($die) {
+		die();
+	}
 }
 
 function is_login() {
@@ -34,7 +35,7 @@ function is_get() {
 }
 
 function conect_db(){
-		$mysql = new mysqli(
+		$mysql = new mysql(
 		                    "mysite.loc",
 							"mysql",
 							"mysql",
