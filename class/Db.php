@@ -49,14 +49,33 @@ Array
 		
 		return $result;
 	}
-	
+	//DELETE FROM users WHERE id = 1
 	public static function delete($tableName, $id)
 	{
+		$pattern = 'DELETE FROM %s WHERE id = %s';
 		
+		$sql 	= sprintf($pattern, $tableName, $id);
+		$result = mysql_query($sql) or die("Query: <b>$sql</b> is failed!!!");
+		return $result;
 	}
-	
+	//INSERT INTO users (email, password, name) VALUES ('mysite@ukr.net','ukrrnet','ukr');
 	public static function insert($tableName, $attributes)
 	{
+		$pattern = 'INSERT INTO %s (%s) VALUES ("%s") ';
+		
+		$lines = [];
+		foreach ($attributes as $k=>$v) {
+				$lines[]  = $k;
+				$values[] = $v;
+				}
+			 
+		$lines 	= implode(', ', $lines);
+		$values = implode('"," ', $values);
+		
+			$sql 	= sprintf($pattern, $tableName, $lines, $values);
+			$result = mysql_query($sql) or die("Query: <b>$sql</b> is failed!!!");
+	    
+		
 		
 	}
 	

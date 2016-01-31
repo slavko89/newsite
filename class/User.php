@@ -5,10 +5,11 @@ class User {
 	
 	public static function login($email, $password)
 	{
-		$row = Db::findOne('user', [
-			'email'		=> $email, 
-			'password'	=> md5($password),
-		]);
+		
+		$row = Db::findOne('users', [
+			                       'email'		=> $email, 
+			                       'password'	=> md5($password),
+		                           ]);
 		
 		if (!empty($row)) {
 			$_SESSION['uid'] = $row['id'];

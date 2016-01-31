@@ -12,8 +12,8 @@ $template 	= '';
 $title = "";
 
 //d($_SESSION);
-
-
+for($i = 62; $i<80; $i++)
+Db::delete('users',$i);	
 switch ($url) {
 	case '/':
 		$template = 'home';
