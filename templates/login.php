@@ -14,13 +14,17 @@
 													<div class="form-group">
 														<label for="email">E-mail</label>
 														<input class="form-control" name="email" id="email">
-														<p class="help-block"></p>
+														<?php if (isset($_SESSION['errors']['email'])):?>
+														<p class="help-block"><?= $_SESSION['errors']['email']?></p>
+														<?php endif;?>
 													</div>
 
 													<div class="form-group">
 														<label for="password">Пароль</label>
 														<input type="password" class="form-control" name="password" id="password">
-														<p class="help-block"></p>
+														<?php if (isset($_SESSION['errors']['password'])):?>
+														<p class="help-block"><?= $_SESSION['errors']['password']?></p>
+														<?php endif;?>
 													</div>
 
 													<button type="submit" class="btn btn-success">Логин</button>

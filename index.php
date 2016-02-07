@@ -1,15 +1,38 @@
 <?php
 session_start();
+header('Content-Type: text/html; charset=utf-8');
+
 include ('/config.php'); 
 include ('/func.php'); 
 include ('/class/User.php'); 
 include ('/class/Db.php'); 
+include ('/class/Validation.php'); 
 
 Db::connect();
 
 $url 		= $_SERVER['REQUEST_URI'];	
 $template 	= '';
 $title = "";
+
+
+$attributes = [
+	'email' => 'test@i.ua',
+	'name' 	=> '1234567',
+	'password' 	=> '1234',
+	'password_confirm' 	=> '12345',
+];	
+
+$rules = [
+	[['email', 'name', 'password'], 'required'],
+	[['email'], 'email'],
+	[['name'], 'type', 'type'=>'string', 'min'=>3, 'max'=>6],	
+	[['password_confirm'], 'compare', 'attribute'=>'password', 'message'=>'Повтор пароля повинен співпадати з паролем'],	
+];
+
+$validation = new Validation;
+$validation->check($attributes, $rules);
+d($validation->errors);
+
 
 //d($_SESSION);
 for($i = 62; $i<80; $i++)

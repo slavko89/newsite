@@ -58,9 +58,14 @@ Array
 		$result = mysql_query($sql) or die("Query: <b>$sql</b> is failed!!!");
 		return $result;
 	}
+	
 	//INSERT INTO users (email, password, name) VALUES ('mysite@ukr.net','ukrrnet','ukr');
 	public static function insert($tableName, $attributes)
 	{
+		if (!empty($attributes)) {
+			false;
+		}
+		
 		$pattern = 'INSERT INTO %s (%s) VALUES ("%s") ';
 		
 		$lines = [];
