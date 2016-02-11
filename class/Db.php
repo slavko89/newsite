@@ -62,10 +62,8 @@ Array
 	//INSERT INTO users (email, password, name) VALUES ('mysite@ukr.net','ukrrnet','ukr');
 	public static function insert($tableName, $attributes)
 	{
-		if (!empty($attributes)) {
-			false;
-		}
 		
+				
 		$pattern = 'INSERT INTO %s (%s) VALUES ("%s") ';
 		
 		$lines = [];
@@ -74,12 +72,13 @@ Array
 				$values[] = $v;
 				}
 			 
-		$lines 	= implode(', ', $lines);
-		$values = implode('"," ', $values);
+		$lines 	= implode(',', $lines);
 		
+		$values = implode('","', $values);
+			
 			$sql 	= sprintf($pattern, $tableName, $lines, $values);
 			$result = mysql_query($sql) or die("Query: <b>$sql</b> is failed!!!");
-	    
+	    	
 		
 		
 	}
@@ -109,7 +108,11 @@ Array
 		}
 		
 		$result = mysql_query($sql) or die("Query: <b>$sql</b> is failed!!!");
-		$row 	= mysql_fetch_assoc($result);
+		
+		$row 	=  mysql_fetch_assoc($result);
+		
+
+		
 		
 		return $row;
 	}

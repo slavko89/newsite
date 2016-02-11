@@ -10,6 +10,14 @@
 										<div class="row">
 											<div class="col-lg-3">
 												<form role="form" method="POST">
+
+													<div class="form-group">
+														<label for="name">Імя</label>
+														<input class="form-control" name="name" id="name">
+														<?php if (isset($_SESSION['errors']['name'])):?>
+														<p class="help-block"><?= $_SESSION['errors']['name']?></p>
+														<?php endif;?>
+													</div>
 													
 													<div class="form-group">
 														<label for="email">E-mail</label>
@@ -26,8 +34,17 @@
 														<p class="help-block"><?= $_SESSION['errors']['password']?></p>
 														<?php endif;?>
 													</div>
+													
+													<div class="form-group">
+														<label for="password_compare">Пароль</label>
+														<input type="password" class="form-control" name="password_compare" id="password_compare">
+														<?php if (isset($_SESSION['errors']['password_compare'])):?>
+														<p class="help-block"><?= $_SESSION['errors']['password_compare']?></p>
+														<?php endif;?>
+													</div>
 
-													<button type="submit" class="btn btn-success">Логин</button>
+													<button type="submit" class="btn btn-success">Зареэструвати</button>
+                                                       
 												</form>
 											</div>
 

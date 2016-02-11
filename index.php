@@ -10,11 +10,12 @@ include ('/class/Validation.php');
 
 Db::connect();
 
+
 $url 		= $_SERVER['REQUEST_URI'];	
 $template 	= '';
 $title = "";
 
-
+/*
 $attributes = [
 	'email' => 'test@i.ua',
 	'name' 	=> '1234567',
@@ -26,13 +27,13 @@ $rules = [
 	[['email', 'name', 'password'], 'required'],
 	[['email'], 'email'],
 	[['name'], 'type', 'type'=>'string', 'min'=>3, 'max'=>6],	
-	[['password_confirm'], 'compare', 'attribute'=>'password', 'message'=>'Повтор пароля повинен співпадати з паролем'],	
+	[['password_compare'], 'compare', 'attribute'=>'password', 'message'=>'Повтор пароля повинен співпадати з паролем'],	
 ];
 
 $validation = new Validation;
 $validation->check($attributes, $rules);
-d($validation->errors);
-
+//d($validation->errors);
+*/
 
 //d($_SESSION);
 for($i = 62; $i<80; $i++)
@@ -63,6 +64,13 @@ switch ($url) {
 	case '/registration':
 	    $template = 'registration';
 		$title = 'Реєстрація';
+		
+		if (is_post()) {
+			if(User::registration($_POST['email'], $_POST['password'], $_POST['name'], $_POST['password_compare'])) {
+				header("location: /");
+			} 
+		}
+	
 		break;	
 	
 	case '/logout':
@@ -72,7 +80,9 @@ switch ($url) {
 	
 	default :
 		$template = '404';
-}
+
+		
+		}
 
 ?>
 
@@ -115,6 +125,8 @@ switch ($url) {
             </div>
             <!-- /.navbar-header -->
 			
+		
+			
 			<?php if(is_login()):?>
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
@@ -151,12 +163,14 @@ switch ($url) {
                     <ul class="nav" id="side-menu">
                         <li>
                             <a href="/login"> Логин</a>
+							<a href="/registration"> Авторызация</a>
                         </li>
 
                     </ul>
                 </div>
             </div>			
             
+
 			<?php endif;?>
 			
         </nav>
