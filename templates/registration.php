@@ -9,43 +9,46 @@
 									<div class="panel-body">
 										<div class="row">
 											<div class="col-lg-3">
+											<?php if (!hasFlash('sucess')):?>
 												<form role="form" method="POST">
 
 													<div class="form-group">
 														<label for="name">Імя</label>
-														<input class="form-control" name="name" id="name">
-														<?php if (isset($_SESSION['errors']['name'])):?>
-														<p class="help-block"><?= $_SESSION['errors']['name']?></p>
-														<?php endif;?>
+														
+														<?= form_input('name')?>
+														<?= form_error('name')?>
 													</div>
 													
 													<div class="form-group">
 														<label for="email">E-mail</label>
-														<input class="form-control" name="email" id="email">
-														<?php if (isset($_SESSION['errors']['email'])):?>
-														<p class="help-block"><?= $_SESSION['errors']['email']?></p>
-														<?php endif;?>
+														<?= form_input('email')?>
+														<?= form_error('email')?>
+													</div>
+
+													<div class="form-group">
+														<label for="username">Ник</label>
+														<?= form_input('username')?>
+														<?= form_error('username')?>
 													</div>
 
 													<div class="form-group">
 														<label for="password">Пароль</label>
-														<input type="password" class="form-control" name="password" id="password">
-														<?php if (isset($_SESSION['errors']['password'])):?>
-														<p class="help-block"><?= $_SESSION['errors']['password']?></p>
-														<?php endif;?>
+														<?= form_input('password')?>
+														<?= form_error('password')?>
 													</div>
 													
 													<div class="form-group">
 														<label for="password_compare">Пароль</label>
-														<input type="password" class="form-control" name="password_compare" id="password_compare">
-														<?php if (isset($_SESSION['errors']['password_compare'])):?>
-														<p class="help-block"><?= $_SESSION['errors']['password_compare']?></p>
-														<?php endif;?>
+														<?= form_input('password_compare')?>
+														<?= form_error('password_compare')?>
 													</div>
 
 													<button type="submit" class="btn btn-success">Зареэструвати</button>
                                                        
 												</form>
+											<?php else:?>
+												<div class="alert alert-success" role="alert"> <?= getFlash('sucess')?> </div>
+											<?php endif?>	
 											</div>
 
 										</div>

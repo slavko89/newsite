@@ -14,31 +14,9 @@ Db::connect();
 $url 		= $_SERVER['REQUEST_URI'];	
 $template 	= '';
 $title = "";
-
-/*
-$attributes = [
-	'email' => 'test@i.ua',
-	'name' 	=> '1234567',
-	'password' 	=> '1234',
-	'password_confirm' 	=> '12345',
-];	
-
-$rules = [
-	[['email', 'name', 'password'], 'required'],
-	[['email'], 'email'],
-	[['name'], 'type', 'type'=>'string', 'min'=>3, 'max'=>6],	
-	[['password_compare'], 'compare', 'attribute'=>'password', 'message'=>'Повтор пароля повинен співпадати з паролем'],	
-];
-
-$validation = new Validation;
-$validation->check($attributes, $rules);
-//d($validation->errors);
-*/
-
-//d($_SESSION);
-for($i = 62; $i<80; $i++)
-Db::delete('users',$i);	
+	
 switch ($url) {
+	
 	case '/':
 		$template = 'home';
 		$title = 'Головна сторінка';
@@ -66,9 +44,9 @@ switch ($url) {
 		$title = 'Реєстрація';
 		
 		if (is_post()) {
-			if(User::registration($_POST['email'], $_POST['password'], $_POST['name'], $_POST['password_compare'])) {
-				header("location: /");
-			} 
+			if (User::registration($_POST)) {
+				header("Refresh:0");
+			}
 		}
 	
 		break;	
@@ -79,11 +57,25 @@ switch ($url) {
 		break;	
 	
 	default :
-		$template = '404';
-
 		
+		$routes = [
+			'/\/news\/update\/\?id\=(.*?)/' => 'news_update',
+			'/\/news\/delete\/\?id\=(.*?)/' => 'news_delete',
+			'/\/article\/update\/\?id\=(.*?)/' => 'article_update',
+			'/\/article\/delete\/\?id\=(.*?)/' => 'article_delete',
+		];
+		
+		foreach ($routes as $pattern => $t) {
+			preg_match($pattern, $url, $matches);
+			if (!empty($matches)) {
+				$template = $t;
+			}
 		}
-
+	}
+	
+	//echo $template;
+	//die();
+	
 ?>
 
 

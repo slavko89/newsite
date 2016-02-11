@@ -34,6 +34,10 @@ $rules = [
 					$this->email($rule[0], $attributes);
 					break;
 				
+				case 'unique':
+					$this->unique($rule[0], $attributes, $rule['tableName']);
+					break;
+				
 				case 'compare':
 					$this->compare($rule[0], $rule, $attributes);
 					break;
@@ -69,6 +73,24 @@ $rules = [
 		}	
 	}
 	
+	public function unique($checkAttributes, $valueAttributes, $tableName)
+	{
+		foreach ($checkAttributes as $attribute) {
+
+			if (empty($this->errors[$attribute])) {
+				
+				$result = Db::findOne($tableName, [
+					$attribute=>$valueAttributes[$attribute]
+				]);
+				
+				if (!empty($result)) {
+					$this->errors[$attribute] = 'Це значення вже зайняте';
+				}
+			}
+			
+		}
+	}
+
 	public function required($checkAttributes, $valueAttributes)
 	{
 		foreach ($checkAttributes as $attribute) {

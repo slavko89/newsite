@@ -5,6 +5,8 @@ class User {
 	
 	public static function login($email, $password)
 	{
+		unset($_SESSION['errors']);
+		
 		$attributes = [
 			'email' 	=> $email,
 			'password' 	=> $password,
@@ -41,35 +43,46 @@ class User {
 		return false;
 	}
 	
-	public static function registration($email, $password, $name, $password_compare)
+	public static function registration($formAttribues)
 	{
-			
+		unset($_SESSION['errors']);
+		
+		$email 				= $formAttribues['email'];
+		$password 			= $formAttribues['password'];
+		$name 				= $formAttribues['name'];
+		$password_compare 	= $formAttribues['password_compare'];
+		$username 	= $formAttribues['username'];
+					
 		$attributes = [
-			'name'		=> $name,
-			'email' 	=> $email,
-			'password' 	=> $password,
-			'password_compare' 	=> $password_compare
+			'name'				=> $name,
+			'email' 			=> $email,
+			'password' 			=> $password,
+			'password_compare' 	=> $password_compare,
+			'username' 			=> $username
 		];	
 		
 		$rules = [
-			[['email', 'password', 'name', 'password_compare'], 'required'],
+			[['email', 'password', 'name', 'password_compare', 'username'], 'required'],
 			[['name'], 'type', 'type'=>'string', 'min'=>6, 'max'=>32],
 			[['email'], 'email'],
 			[['password'], 'type', 'type'=>'string', 'min'=>4, 'max'=>32],	
-			[['password_compare'], 'compare', 'attribute'=>'password', 'message'=>'Повтор пароля повинен співпадати з паролем']
+			[['password_compare'], 'compare', 'attribute'=>'password', 'message'=>'Повтор пароля повинен співпадати з паролем'],
+			[['email', 'username'], 'unique', 'tableName'=>'users'],
 		];
 		
 		$validation = new Validation;
 		$validation->check($attributes, $rules);
 		
-		
 		if (empty($validation->errors)){
 			$row = Db::insert('users', [
-									
-									'email'		=> $email, 
-									'password'	=> md5($password),
-									'name'		=> $name
-							]);
+				'email'		=> $email, 
+				'password'	=> md5($password),
+				'name'		=> $name,
+				'username'	=> $username
+			]);
+			
+			setFlash('sucess', 'Бла бла бла ...');
+			
 			return true;
 		}	
 		
