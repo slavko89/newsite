@@ -1,18 +1,17 @@
 <?php
-		
-		session_start();
+	//error_reporting(E_ALL);	
+	session_start();
 
-		header('Content-Type: text/html; charset=utf-8');
-		include ('/func.php');
-		include('/class/Uploader.php');
-		include('/class/Db.php');
-		include('/class/Animal.php');
-		include('/class/User.php');
-		include('/class/Validation.php');
+	header('Content-Type: text/html; charset=utf-8');
+	include ('/func.php');
+	include('/class/Uploader.php');
+	include('/class/Db.php');
+	include('/class/Animal.php');
+	include('/class/User.php');
+	include('/class/Validation.php');
 	 	 
-		Db::connect();
-		
-
+	Db::connect();
+	
 	$url = $_SERVER['REQUEST_URI'];
 	$title = '';
 	$template = '';
@@ -39,7 +38,7 @@
 				$template = 'addanimals';
 				$title = 'Добавлення тварин';
 				if($_POST['sendForm']){
-					Animal::addAnimal($_POST);
+					$errors = Animal::getInstence()->add($_POST)->errors;
 				}
 				
 				break;

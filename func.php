@@ -34,9 +34,9 @@ function is_get() {
 	}
 }
 
-function form_error($attribute) {
-	if (is_post() && isset($_SESSION['errors'][$attribute])) {
-		return sprintf('<p class="help-block">%s</p>', $_SESSION['errors'][$attribute]);
+function form_error($attribute, $errors) {
+	if (is_post() && isset($errors[$attribute])) {
+		return sprintf('<p class="help-block">%s</p>', $errors[$attribute]);
 	}
 }
 
