@@ -1,187 +1,172 @@
 <?php
-session_start();
-header('Content-Type: text/html; charset=utf-8');
+		
+		session_start();
 
-include ('/config.php'); 
-include ('/func.php'); 
-include ('/class/User.php'); 
-include ('/class/Db.php'); 
-include ('/class/Validation.php'); 
+		header('Content-Type: text/html; charset=utf-8');
+		include ('/func.php');
+		include('/class/Uploader.php');
+		include('/class/Db.php');
+		include('/class/Animal.php');
+		include('/class/User.php');
+		include('/class/Validation.php');
+	 	 
+		Db::connect();
+		
 
-Db::connect();
-
-
-$url 		= $_SERVER['REQUEST_URI'];	
-$template 	= '';
-$title = "";
+	$url = $_SERVER['REQUEST_URI'];
+	$title = '';
+	$template = '';
 	
-switch ($url) {
 	
-	case '/':
-		$template = 'home';
-		$title = 'Головна сторінка';
-		break;
+	switch ($url) {
 	
-	case '/login':
-		$template = 'login';
-		$title = 'Логін';
-		
-		if (is_post()) {
-			if(User::login($_POST['email'], $_POST['password'])) {
-				header("location: /");
-			} 
-		}
-		
-		break;	
+			case '/':
+				$template = 'home';
+				$title = 'Головна сторінка';
+				break;
+				
+			case '/home':
+				$template = 'home';
+				$title = 'Головна сторінка';
+				break;
+				
+			case '/maps':
+				$template = 'maps';
+				$title = 'Головна сторінка';
+				break;
+				
+			case '/addanimals':
+				$template = 'addanimals';
+				$title = 'Добавлення тварин';
+				if($_POST['sendForm']){
+					Animal::addAnimal($_POST);
+				}
+				
+				break;
 	
-	case '/posts':
-		$template = 'posts';
-		$title = 'Головна сторінка';
-		break;
-	
-	case '/registration':
-	    $template = 'registration';
-		$title = 'Реєстрація';
-		
-		if (is_post()) {
-			if (User::registration($_POST)) {
-				header("Refresh:0");
-			}
-		}
-	
-		break;	
-	
-	case '/logout':
-	    User::logout();
-		header("location: /login");
-		break;	
-	
-	default :
-		
-		$routes = [
-			'/\/news\/update\/\?id\=(.*?)/' => 'news_update',
-			'/\/news\/delete\/\?id\=(.*?)/' => 'news_delete',
-			'/\/article\/update\/\?id\=(.*?)/' => 'article_update',
-			'/\/article\/delete\/\?id\=(.*?)/' => 'article_delete',
-		];
-		
-		foreach ($routes as $pattern => $t) {
-			preg_match($pattern, $url, $matches);
-			if (!empty($matches)) {
-				$template = $t;
-			}
-		}
-	}
-	
-	//echo $template;
-	//die();
-	
+			case '/login':
+				$template = 'login';
+				$title = 'Логування';
+				User::login($_POST['email'], $_POST['password']);
+				
+				break;
+				
+			case '/registration':
+				$template = 'registration';
+				$title = 'Реєстрація';
+				User::registration($_POST);
+				break;
+				
+			case '/logout':
+				User::logout();
+				header("location: /login");
+				break;
+				
+			default :
+				$template = '';
+				}
+			
 ?>
 
 
-
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title><?= $title?></title>
-
-    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-    <link href="/dist/css/sb-admin-2.css" rel="stylesheet">
-    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-</head>
-
-<body>
-
-    <div id="wrapper">
-
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">SlavikCms</a>
-            </div>
-            <!-- /.navbar-header -->
+<html >
+	<head>
+			<title><?= $title?></title>
+			<meta name="viewport" content="initial-scale=1.0">
+			 <meta charset="utf-8">
+			<link rel="stylesheet" href="styles/style.css">
+			<link rel="stylesheet" href="styles/bootstrap.min.css">
+			 <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon">
+			<script src="js/jquery-3.0.0.min.js"></script>
+			<script src="js/bootstrap.min.js"></script>
 			
-		
 			
-			<?php if(is_login()):?>
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-          
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="index.html"> Test</a>
-                        </li>
+						
 
-                    </ul>
-                </div>
-            </div>
-			
-			<?php else:?>
-			
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="/login"> Логин</a>
-							<a href="/registration"> Авторызация</a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>			
-            
-
-			<?php endif;?>
-			
-        </nav>
-
-        <div id="page-wrapper">
-            <div class="container-fluid">
-				
-				<?php include ('/templates/' . $template . '.php');?>
+	</head>
 	
-            </div>
-        </div>
-       
-    </div>
-    
-	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-	<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-	<script src="/dist/js/sb-admin-2.js"></script>
+	<body >
+		
+				
+	<div class="container">
+		<div class="row" id="header">	
+				<div class="col-md-8" id="header-text">
+					<h2>Сайт пошуку пропавших тварин</h2>
+				</div>
+				
+				<?php  if(is_login()):?>
+				<div class="col-md-4" id="registration">
+					<a href="/logout" id="input" 	>Вихід</a>
+				</div>	
+				<?php else:?>
+				<div class="col-md-4" id="registration">
+						<a href="/login" id="input" >Вхід</a>
+						|
+						<a href="/registration" id="input" 	>Реєстрація</a>
+				</div>	
+						
+				<?php endif;?>
+		</div>
+		
+		<?php  if(is_login()):?>
+		<div class="row" >
+			<div class="col-md-12" id="menu">
+					<nav role="navigation" class="navbar navbar-default navbar-inverse">
+						<div id="navbarCollapse" class="collapse navbar-collapse">
+							<ul class="nav navbar-nav">
+							  <li><a href="/home">Home</a></li>
+							  <li class="divider-vertical"></li>
+							  <li><a href="/maps">Карта</a></li>
+							  <li class="divider"></li>
+							  <li><a href="/addanimals">Добавити тварину</a></li>
+							</ul>
+						</div>
+					</nav>
+	
+	
+	
+			</div>
+		</div>
+		<?php  endif;?>
+ 
+		<div class="row" >
+			
+			<?php include ('/templates/' . $template . '.php');?>
+				
+		</div>
+		
+		<div class="row" >
+			<div class="col-md-12" id = "footer">
+				<center><h2>&copy; Славік Іванюра</h2></center>
+		
+			</div>
+		</div>
+		
+	</div>
+	
+		
 
-</body>
-
+	
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_1b13FQd9_-WXfClKBkQioOQIOOK-fLI&signed_in=true&callback=initMap"></script>
+	
+	<script src="js/markeradd.js">  </script>
+	<script src="js/map.js">  </script>
+	<script src="js/upload.js">  </script>
+		<script src="js/jquery.js"></script>
+	<script src="js/imageupload.js"></script>
+	<script>
+		$(document).ready(function () {				
+			$("#upload_image").imageUpload("upload.php", {
+				uploadButtonText: "Button",
+				previewImageSize: 150,
+				onSuccess: function (response) {
+					alert(response);
+				}
+			});
+		});
+	</script>
+	
+	</body>
 </html>

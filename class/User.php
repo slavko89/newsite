@@ -3,6 +3,7 @@
 
 class User {
 	
+	
 	public static function login($email, $password)
 	{
 		unset($_SESSION['errors']);
@@ -30,12 +31,14 @@ class User {
 			if (!empty($row)) {
 				
 				$_SESSION['uid'] = $row['id'];
+				setFlash('sucess', 'Вітаємо вас на сайті');
 				
 				return true;
 			
 			} else {
 				$validation->errors['email'] = 'Такий користувача в БД не знайдено!';
 			}
+			
 		} 
 		
 		$_SESSION['errors'] = $validation->errors;
@@ -50,21 +53,24 @@ class User {
 		$email 				= $formAttribues['email'];
 		$password 			= $formAttribues['password'];
 		$name 				= $formAttribues['name'];
+		$numberPhone		= $formAttribues['numberPhone'];
 		$password_compare 	= $formAttribues['password_compare'];
-		$username 	= $formAttribues['username'];
+		$username 	        = $formAttribues['username'];
 					
 		$attributes = [
 			'name'				=> $name,
 			'email' 			=> $email,
 			'password' 			=> $password,
+			'numberPhone'		=> $numberPhone,
 			'password_compare' 	=> $password_compare,
 			'username' 			=> $username
 		];	
 		
 		$rules = [
-			[['email', 'password', 'name', 'password_compare', 'username'], 'required'],
+			[['email', 'password', 'name','numberPhone', 'password_compare', 'username'], 'required'],
 			[['name'], 'type', 'type'=>'string', 'min'=>6, 'max'=>32],
 			[['email'], 'email'],
+			[['numberPhone'], 'numberPhone'],
 			[['password'], 'type', 'type'=>'string', 'min'=>4, 'max'=>32],	
 			[['password_compare'], 'compare', 'attribute'=>'password', 'message'=>'Повтор пароля повинен співпадати з паролем'],
 			[['email', 'username'], 'unique', 'tableName'=>'users'],
@@ -75,13 +81,14 @@ class User {
 		
 		if (empty($validation->errors)){
 			$row = Db::insert('users', [
-				'email'		=> $email, 
-				'password'	=> md5($password),
-				'name'		=> $name,
-				'username'	=> $username
+				'email'			=> $email, 
+				'password'		=> md5($password),
+				'name'			=> $name,
+				'numberPhone'	=> '+38'.$numberPhone,
+				'username'		=> $username
 			]);
 			
-			setFlash('sucess', 'Бла бла бла ...');
+			setFlash('sucess', 'Реєстрація була успішно виконана!!!');
 			
 			return true;
 		}	

@@ -40,6 +40,7 @@ function form_error($attribute) {
 	}
 }
 
+
 function form_input($attribute, $type='text') {
 	return sprintf('<input type="%s" class="form-control" name="%s" id="%s" value="%s">', $type, $attribute, $attribute, isset($_POST[$attribute])?$_POST[$attribute]:'');
 }
@@ -59,7 +60,16 @@ function getFlash($type) {
 		return $message;
 	}
 }
-
+function generateDir($length = 4){
+	$chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
+	$numChars = strlen($chars);
+	$string = '';
+	
+	for ($i = 0; $i < $length; $i++) {
+	$string .= substr($chars, rand(1, $numChars) - 1, 1);
+	}
+	return $string;
+}
 
 
 

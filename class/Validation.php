@@ -5,20 +5,7 @@ class Validation {
 		
 	public $errors = [];
 	
-/*
-$attributes = [
-	'email' => 'test@i.ua',
-	'name' 	=> 'tester',
-];	
 
-$rules = [
-	[['email', 'name', 'password'], 'required'],
-	[['name'], 'type', 'type'=>'string', 'min'=>6, 'max'=>32],
-	[['birthday'], 'type', 'type'=>'date', 'format'=>'Y-m-d'],
-];
-
-*/
-	
 	public function check($attributes, $rules)
 	{
 		
@@ -32,6 +19,10 @@ $rules = [
 					
 				case 'email':
 					$this->email($rule[0], $attributes);
+					break;
+					
+				case 'numberPhone':
+					$this->numberPhone($rule[0], $attributes);
 					break;
 				
 				case 'unique':
@@ -106,6 +97,16 @@ $rules = [
 		foreach ($checkAttributes as $attribute) {
 			if (!empty($valueAttributes[$attribute]) && !filter_var($valueAttributes[$attribute], FILTER_VALIDATE_EMAIL)) {
 				$this->errors[$attribute] = 'Не є E-mail адресом';
+			}
+			
+		}
+	}
+	
+		public function numberPhone($checkAttributes, $valueAttributes)
+	{
+		foreach ($checkAttributes as $attribute) {
+			if(!preg_match("/^[0-9]{10,10}+$/", $valueAttributes[$attribute])){
+							$this->errors[$attribute] = 'Не є номером телефону';
 			}
 			
 		}
