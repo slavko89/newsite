@@ -3,14 +3,14 @@
 
 class Uploader {
 	
+	const UPLOAD_PATH = "/image/data/upload/";
+	
 	public $name;
 	public $type;
 	public $tmp_name;
 	public $error;
 	public $size;
-	
 	public $errors = [];
-	
 	public $upload_path;
 	
 	public static function getInstence()
@@ -21,34 +21,30 @@ class Uploader {
 	public function validate($attributes)
 	{
 		/*
-		$this->name	= $_FILES['file']['name'][$i];
+		$this->name		= $_FILES['file']['name'][$i];
 		$this->type 	= $_FILES['file']['type'][$i];
 		$this->tmp_name = $_FILES['file']['tmp_name'][$i];
 		$this->error	= $_FILES['file']['error'][$i];
 		$this->size 	= $_FILES['file']['size'][$i];
 		*/
-
 		foreach ($attributes as $k=>$v) {
 			if (property_exists($this, $k)) {
 				$this->{$k} = $v;					
 			}				
 		}
-		
+			
 		$this->valid();
-	
-	    return $this;
+		return $this;
 	}
 	
 	function checkSizeFile() 
 	{
 		if ($this->size <= 1024*1024*2) {
-			
 			return true;
 		} else {
 			$this->errors[] = 'Файл "'.$this->name.'" займає більше 2 мбайт';
 			return false;
 		}
-		return;	
 	}
 
 	function checkSizeImage() 
@@ -62,11 +58,9 @@ class Uploader {
 		}
 	}
 	
-
 	function checkImageType() 
 	{
 		if ($this->type == 'image/jpeg' || 'image/psd') {
-			
 			return true;
 		} else {
 			$this->errors[] = 'Тип файлу "'.$this->name. '" не є jpg';
@@ -75,7 +69,6 @@ class Uploader {
 	}
 
 	function valid() {
-		
 		if ($this->checkImageType() && $this->checkSizeFile()) {
 			return true;
 		}else {
@@ -83,15 +76,14 @@ class Uploader {
 		}
 	}
 	
-	function upload() {
-		
-		if ($this->checkImageType() && $this->checkSizeFile()) {
-			move_uploaded_file($this->tmp_name, $_SERVER['DOCUMENT_ROOT']."/file/upload/".$_SESSION['generateDir']."/".$this->name);
-			return true;
-		}else {
-			return false;
-		}
+	function upload($attrs,$path) {
+		if(!file_exists($_SERVER['DOCUMENT_ROOT']."/image/data/upload/".$path)){
+			mkdir($_SERVER['DOCUMENT_ROOT']."/image/data/upload/".$path);
+		} 
+		move_uploaded_file($attrs['tmp_name'], $_SERVER['DOCUMENT_ROOT']."/image/data/upload/".$path."/".$attrs['name']);
+		return $this;
 	}
+
 	
 }
 

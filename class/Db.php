@@ -29,7 +29,7 @@ class Db{
 			
 			$sql = sprintf($pattern, $tableName, $lines, $values);
 			$result = mysql_query($sql)or die("Query: <b>$sql</b> is failed!!!");
-		
+		return $result;
 	}
 	
 	public static function delete($tableName, $id){

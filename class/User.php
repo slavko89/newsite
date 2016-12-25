@@ -3,11 +3,16 @@
 
 class User {
 	
+	public $errors = [];
 	
-	public static function login($email, $password)
+	public static function getInstence()
 	{
-		unset($_SESSION['errors']);
 		
+		return new self;
+	}
+	function login($email, $password)
+	{
+				
 		$attributes = [
 			'email' 	=> $email,
 			'password' 	=> $password,
@@ -23,7 +28,7 @@ class User {
 		$validation->check($attributes, $rules);
 		
 		if (empty($validation->errors)) {
-			$row = Db::findOne('users', [
+			$row = Db::findOne('user', [
 				'email'		=> $email, 
 				'password'	=> md5($password)
 			]);
@@ -41,15 +46,15 @@ class User {
 			
 		} 
 		
-		$_SESSION['errors'] = $validation->errors;
+		$this->errors = $validation->errors;
+	
 		
-		return false;
+		return $this;
 	}
 	
-	public static function registration($formAttribues)
+	function registration($formAttribues)
 	{
-		unset($_SESSION['errors']);
-		
+				
 		$email 				= $formAttribues['email'];
 		$password 			= $formAttribues['password'];
 		$name 				= $formAttribues['name'];
@@ -73,14 +78,14 @@ class User {
 			[['numberPhone'], 'numberPhone'],
 			[['password'], 'type', 'type'=>'string', 'min'=>4, 'max'=>32],	
 			[['password_compare'], 'compare', 'attribute'=>'password', 'message'=>'Повтор пароля повинен співпадати з паролем'],
-			[['email', 'username'], 'unique', 'tableName'=>'users'],
+			[['email', 'username'], 'unique', 'tableName'=>'user'],
 		];
 		
 		$validation = new Validation;
 		$validation->check($attributes, $rules);
 		
 		if (empty($validation->errors)){
-			$row = Db::insert('users', [
+			$row = Db::insert('user', [
 				'email'			=> $email, 
 				'password'		=> md5($password),
 				'name'			=> $name,
@@ -93,8 +98,8 @@ class User {
 			return true;
 		}	
 		
-		$_SESSION['errors'] = $validation->errors;
-		return false;
+		$this->errors = $validation->errors;
+		return $this;
 		
 			
 		

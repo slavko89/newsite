@@ -100,11 +100,11 @@ BODY
 	height: 100px;
 }
 
-  .thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
 
+#block_animals_search > li{
+	border: 1px solid black;
+	float: left;
+	width: 200 px;
+}
 
 
