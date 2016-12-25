@@ -99,48 +99,33 @@ class Animal{
 		return $this;
 	}
 	
+    public static function getList()
+	{
+		$list = [];
+        $result = mysql_query("SELECT `id`, `kind_of_animal` FROM `animal_kind_of_animal`");
+        
+		$row = mysql_fetch_assoc($result);
+		do{
+			$list[$row['id']] = $row['kind_of_animal']; 
+		} while($row = mysql_fetch_assoc($result));
+		
+        return $list;		
+    }
+	
+	public static function getListBreed($animalId)
+	{
+		$list = [];
+        $result = Db::findAll('animal_breed',  ['kind_of_animal_id'=>$animalId]);
+          
+		foreach ($result as $item) {
+		    $list[$item['id']] = $item['breed'];	
+		}  
 
+        return $list;		
+    }
 }
 
 
-/*
-			if($_FILES['file']['name'][0] != 0) mkdir($_SERVER['DOCUMENT_ROOT']."/file/upload/".$generateDir);
-				for($i = 0; $i<count($_FILES['file']['name']); $i++){
-					$uploader = new Uploader($i);
-					$tmp_images[$i] = $uploader->name;
-				}
-				if (empty($_SESSION['errors'])){
-					$row = Db::insert('addanimals', [
-						'name'			=> $name,
-						'kind_of_animal_id'=> $kind_of_animal_id,
-						'breed_id' 		=> $breed_id,
-						'description'	=> $description,
-						'adress' 		=> $adress,
-						'date'			=> time(),
-						'id_user'		=> $_SESSION['uid']
-					]);
-					
-					$rows = db::findOne('addanimals', [
-						'name'			=> $name,
-						'kind_of_animal_id'=> $kind_of_animal_id,
-						'breed_id' 		=> $breed_id,
-						'description'	=> $description,
-						'adress' 		=> $adress,
-					]);
-					
-					foreach($tmp_images as $k => $v){
-						Db::insert('foto_animals', [
-						'url'			=> "../file/upload/".$generateDir."/".$v,
-						'id_animal'		=> $rows['id']
-			
-					]);
-					}
-								
-					setFlash('sucess', 'Тварина добавлена на карту!!!');
-					return true;
-				}
-				return false;
 
-*/
 
 ?>

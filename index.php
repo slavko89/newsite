@@ -9,8 +9,6 @@
 	include('/class/Animal.php');
 	include('/class/User.php');
 	include('/class/Validation.php');
-	include('/class/get_regions_mysql.php');
-	
 	 	 
 	Db::connect();
 	
@@ -83,9 +81,9 @@
 			<link rel="stylesheet" href="styles/style.css">
 			<link rel="stylesheet" href="styles/bootstrap.min.css">
 			 <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon">
-			<script src="js/jquery-3.0.0.min.js"></script>
-			<script src="js/bootstrap.min.js"></script>
-		
+			
+	    <script src="/js/jquery.js"></script>
+	    <script src="/js/selects.js"></script>
 		
 		
 	</head>
@@ -136,17 +134,7 @@
 					<center><h2>&copy; Славік Іванюра</h2></center>
 				</div>
 			</div>
-		</div>
-
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_1b13FQd9_-WXfClKBkQioOQIOOK-fLI&signed_in=true&callback=initMap"></script>
-	
-	<script src="js/markeradd.js">  </script>
-	<script src="js/map.js">  </script>
-	<script src="js/upload.js">  </script>
-	<script src="js/jquery.js"></script>
-	<script src="js/imageupload.js"></script>
-	<script src="js/selects.js"></script>
-
-		 
+		</div>	
+	 
 	</body>
 </html>

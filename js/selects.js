@@ -1,6 +1,5 @@
 $(document).ready(function () {
 	$('#kind_of_animal_id').change(function () {
-		alert 'massage';
 		var kind_of_animal_id = $(this).val();
 		if (kind_of_animal_id == '0') {
 			$('#breed_id').html('<option>- выберите город -</option>');
@@ -8,21 +7,25 @@ $(document).ready(function () {
 			return(false);
 		}
 		$('#breed_id').attr('disabled', true);
-		$('#breed_id').html('<option>загрузка...</option>');
+		//$('#breed_id').html('<option>загрузка...</option>');
 		
-		var url = '../class/get_regions_mysql.php';
+		var url = '/ajax/get_regions_mysql.php';
 		
-		$.get( url,kind_of_animal_id: kind_of_animal_id,function (result) {
+		$.post(url, {kind_of_animal_id: kind_of_animal_id},function (result) {
 				if (result.type == 'error') {
 					alert('error');
 					return(false);
 				}
 				else {
-					var options = '';
-					$(result.regions).each(function() {
-						options += '<option value="' + $(this).attr('id') + '">' + $(this).attr('title') + '</option>';
-					});
-					$('#breed_id').html(options);
+					//$('#breed_id option').remove();
+					//$('#breed_id').append('<option value="">- Виберіть породу -</option>');
+					
+					$('#breed_id').children().not(":first").remove();
+					
+					$.each(result.breeds, function(k, v) {
+						$('#breed_id').append('<option value="' + k + '">' + v + '</option>');
+					})
+					
 					$('#breed_id').attr('disabled', false);
 				}
 			},

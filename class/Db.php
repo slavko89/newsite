@@ -66,10 +66,35 @@ class Db{
 		
 		$row 	=  mysql_fetch_assoc($result);
 		
-
-		
-		
 		return $row;
+	}
+	
+	public static function findAll($tableName, $attributes = []){
+		
+		$pattern = 'SELECT * FROM %s %s';
+		
+		$lines = [];
+		foreach ($attributes as $k=>$v) {
+			$lines[] = sprintf('%s = "%s"', $k, $v);
+		}
+		
+		$where 	= implode(' AND ', $lines);
+		
+		if (!empty($where)) {
+			$where = 'WHERE ' . $where;
+		} 
+		
+		$sql 	= sprintf($pattern, $tableName, $where);
+		
+		$data = [];
+        $result = mysql_query($sql);
+        
+		$row = mysql_fetch_assoc($result);
+		do{
+			$data[] = $row; 
+		} while($row = mysql_fetch_assoc($result));
+		
+        return $data;			
 	}
 	
 }

@@ -19,14 +19,12 @@ $errors = isset($errors) ? $errors : [];
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Вид тварини</label>
 					<div class="col-sm-8">
+					
 						<select name="kind_of_animal_id" id="kind_of_animal_id" class="form-control">
-							<option value="0">- Виберіть вид тварини -</option>
-							<option value="30">Собака</option>
-							<option value="31">Кішка</option>
-							<option value="32">Птиця</option>
-							<option value="33">Гризун</option>
-							<option value="34">Худоба</option>
-							<option value="35">Рептилія</option>
+							<option value="">- Виберіть вид тварини -</option>
+							<?php foreach (Animal::getList() as $k=>$v):?>
+							<option value="<?= $k?>"><?= $v?></option>
+							<?php endforeach;?>
 						</select>
 						<?= form_error('kind_of_animal_id', $errors)?>
 					</div>
