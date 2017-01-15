@@ -20,13 +20,7 @@ class Uploader {
 	
 	public function validate($attributes)
 	{
-		/*
-		$this->name		= $_FILES['file']['name'][$i];
-		$this->type 	= $_FILES['file']['type'][$i];
-		$this->tmp_name = $_FILES['file']['tmp_name'][$i];
-		$this->error	= $_FILES['file']['error'][$i];
-		$this->size 	= $_FILES['file']['size'][$i];
-		*/
+
 		foreach ($attributes as $k=>$v) {
 			if (property_exists($this, $k)) {
 				$this->{$k} = $v;					

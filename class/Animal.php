@@ -11,24 +11,30 @@ class Animal{
 	
 	public function add($formAttribues)
 	{
+		$title 				= $formAttribues['title'];
 		$name 				= $formAttribues['name'];
-		$kind_of_animal_id	= $formAttribues['kind_of_animal_id'];
+		$animal_id			= $formAttribues['animal_id'];
 		$breed_id			= $formAttribues['breed_id'];
 		$description		= $formAttribues['description'];
-		$adress				= $formAttribues['adress'];
-	    
+		$address			= $formAttribues['address'];
+		$lat				= $formAttribues['lat'];
+		$lng				= $formAttribues['lng'];
+	   
 	
 		$attributes = [
+			'title'					=> $title,
 			'name'					=> $name,
-			'kind_of_animal_id'		=> $kind_of_animal_id,
+			'animal_id'				=> $animal_id,
 			'breed_id' 				=> $breed_id,
 			'description'			=> $description,
-			'adress' 				=> $adress
+			'address' 				=> $address
 			
 		];
 		
 		$rules = [
-			[['name', 'kind_of_animal_id', 'breed_id','description', 'adress'], 'required'],
+			[['title','name', 'animal_id', 'breed_id','description', 'address'], 'required'],
+			
+			
 		];
 		
 		$path = generateDir(4);	
@@ -58,55 +64,59 @@ class Animal{
 			$this->errors['file'] = $stringError;
 			
 			if(empty($this->errors['file']) && $_FILES['file']['error'][0] == 0){
-				$row = Db::insert('animal', [
+					$coordinates = Db::insert('coordinates', [
+						'lat'	=> $lat,
+						'lng'	=> $lng
+					]);
+					$latlng = Db::findOne('coordinates', [
+						'lat'	=> $lat,
+						'lng'	=> $lng
+						
+					]); 
+					$poster = Db::insert('poster', [
+						'title'					=> $title,
 						'name'					=> $name,
-						'kind_of_animal_id'		=> $kind_of_animal_id,
+						'animal_id'				=> $animal_id,
 						'breed_id' 				=> $breed_id,
 						'description'			=> $description,
-						'adress' 				=> $adress,
+						'address' 				=> $address,
 						'date'					=> time(),
-						'id_user'				=> $_SESSION['uid']
+						'user_id'				=> $_SESSION['uid'],
+						'coordinates_id'		=> $latlng['id']
 					]);
 								
-					$rows = Db::findOne('animal', [
+					$rows = Db::findOne('poster', [
 						'name'				=> $name,
-						'kind_of_animal_id'	=> $kind_of_animal_id,
+						'animal_id'			=> $animal_id,
 						'breed_id' 			=> $breed_id,
 						'description'		=> $description,
-						'adress' 			=> $adress,
+						'address' 			=> $address,
 					]);
 				
 				foreach ($imagesAttrs as $attrs) {
 					Uploader::getInstence()->upload($attrs,$path);
-					Db::insert('animal_foto', [
+					Db::insert('poster_foto', [
 						'url'			=> $path.'/'.$attrs['name'],
-						'id_animal'		=> $rows['id']
+						'animal_id'		=> $rows['id']
 			
 					]);
 				}
 				setFlash('sucess', 'Тварина добавлена на карту!!!');
 				return $this;
 			}
-				
-			
-			
-			
-			
-			
 		}	
-		
-		    
+    
 		return $this;
 	}
 	
     public static function getList()
 	{
 		$list = [];
-        $result = mysql_query("SELECT `id`, `kind_of_animal` FROM `animal_kind_of_animal`");
+        $result = mysql_query("SELECT `id`, `title` FROM `animal`");
         
 		$row = mysql_fetch_assoc($result);
 		do{
-			$list[$row['id']] = $row['kind_of_animal']; 
+			$list[$row['id']] = $row['title']; 
 		} while($row = mysql_fetch_assoc($result));
 		
         return $list;		
@@ -115,17 +125,72 @@ class Animal{
 	public static function getListBreed($animalId)
 	{
 		$list = [];
-        $result = Db::findAll('animal_breed',  ['kind_of_animal_id'=>$animalId]);
+        $result = Db::findAll('animal_breed',  ['animal_id'=>$animalId]);
           
 		foreach ($result as $item) {
-		    $list[$item['id']] = $item['breed'];	
+		    $list[$item['id']] = $item['title'];	
 		}  
 
         return $list;		
     }
+	
+	public function update($formAttribues)
+	{
+		$title 				= $formAttribues['title'];
+		$name 				= $formAttribues['name'];
+		$animal_id			= $formAttribues['animal_id'];
+		$breed_id			= $formAttribues['breed_id'];
+		$description		= $formAttribues['description'];
+		$address			= $formAttribues['address'];
+		$lat				= $formAttribues['lat'];
+		$lng				= $formAttribues['lng'];
+	    
+	
+		$attributes = [
+			'title'					=> $title,
+			'name'					=> $name,
+			'animal_id'				=> $animal_id,
+			'breed_id' 				=> $breed_id,
+			'description'			=> $description,
+			'address' 				=> $address
+			
+		];
+		
+		$rules = [
+			[['title','name', 'animal_id', 'breed_id','description', 'address'], 'required'],
+			
+			
+		];
+		
+		$validation = new Validation;
+		$validation->check($attributes, $rules);
+		$this->errors = $validation->errors;
+			if(empty($this->errors)){
+				$rows = Db::findOne('poster', ['id' => $_GET['id']]);
+			
+				$row = Db::update('poster', [
+						'title'					=> $title,
+						'name'					=> $name,
+						'animal_id'				=> $animal_id,
+						'breed_id' 				=> $breed_id,
+						'description'			=> $description,
+						'address' 				=> $address,
+						
+					],$_GET['id']);
+					
+				$coordinates = Db::update('coordinates', [
+					'lat'	=> $lat,
+					'lng'	=> $lng
+				],$rows['coordinates_id']);
+				setFlash('sucess', 'Тварина добавлена на карту!!!');
+				return $this;
+			}
+		
+			
+		
+    
+		return $this;
+	}
 }
-
-
-
 
 ?>

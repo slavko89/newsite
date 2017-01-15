@@ -21,16 +21,7 @@ BODY
 	background-color:#FFF 
 }
 
-#map {
-	margin-left: 17px;
-	height: 140%;
-	width: 1140px;
-	left: 15px;
-	padding: 20px;
-	border: 2px solid #CCC; 
-	
-	background-color:#FFF 
-}
+
 #map-container { 
 	height: 400px 
 }
@@ -56,6 +47,13 @@ BODY
 	height: 100%;
 	color: #FFFFFF;
 }
+#profil{
+	
+	float:rghit;
+	color: #FFFFFF;
+}
+
+
 
 #footer {
   background: url(../image/footer-fon.jpg);
@@ -99,12 +97,81 @@ BODY
 	width: 100px;
 	height: 100px;
 }
-
-
-#block_animals_search > li{
-	border: 1px solid black;
-	float: left;
-	width: 200 px;
+#view{
+	height: 140%;
+	width: 1140px;
+	left: 15px;
+	padding: 20px;
+	border: 2px solid #CCC; 
+	
+	background-color:#FFF 
 }
+
+#status {
+	display: block;
+	cursor: pointer;
+	position: relative;
+	padding-left: 25px;
+	margin-right: 15px;
+	font-size: 13px;
+
+}
+
+#status input{
+margin-left:10px;
+}
+.view p{
+	text-align: justify;
+}
+#image {
+	
+ border: 2px solid black; 
+
+}
+#feedback{
+	margin-top: 10px;
+}
+.title{
+	color:#095779;
+	margin-bottom: 10px;
+}
+
+
+.well {
+	background: #EEE;  
+	height: 350px; 
+	padding:2px;
+	}
+.well a{
+	color:#095779;
+	}
+.well a:hover{
+	color:#792424;
+	}
+.product img {height: 200px; width: 100%;}
+.product {
+	margin-bottom: 10px; 
+	height: 100%;
+	width:100%;
+	}
+	
+#filtr {
+    display: block;
+    -webkit-margin-start: -15px;
+    -webkit-margin-end: 4px;
+   
+    -webkit-padding-start: 1em;
+    -webkit-padding-end: 3em;
+ 
+    min-width: -webkit-min-content;
+    border-width: 2px;
+    border-style: groove;
+    border-color: cornflowerblue;
+    border-image: initial;
+}
+#form_send_mail{
+	float:left;
+}
+		
 
 

@@ -32,14 +32,32 @@ class Db{
 		return $result;
 	}
 	
-	public static function delete($tableName, $id){
+	public static function update($tableName, $atributes, $id){
 		
-		$pattern = 'DELETE FROM %s WHERE id="%s"';
+		$pattern = "UPDATE %s SET %s WHERE id=%s";
 		
-		$sql = sprintf($pattern, $tableName, $id);
+		foreach($atributes as $k=>$v){
+			
+			$lines[] = ''.$k.'="'.$v.'"';
+		}	
+			$lines = implode(', ', $lines);
+						
+			$sql = sprintf($pattern, $tableName, $lines, $id);
+			$result = mysql_query($sql)or die("Query: <b>$sql</b> is failed!!!");
+		return $result;
+	}
+	
+	public static function delete($tableName, $atributes){
+		
+		$pattern = 'DELETE FROM %s WHERE %s';
+		foreach($atributes as $k => $v){
+			$str = $k.'="'.$v.'"';
+		}
+		$sql = sprintf($pattern, $tableName, $str);
 		$result = mysql_query($sql) or die("Query: <b>$sql</b> is failed");
 		return $result;
 	}
+	
 	
 	//SELECT * FROM user WHERE email = '1' AND password = '2'
 	
@@ -94,7 +112,7 @@ class Db{
 			$data[] = $row; 
 		} while($row = mysql_fetch_assoc($result));
 		
-        return $data;			
+		return $data;			
 	}
 	
 }

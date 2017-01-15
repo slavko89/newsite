@@ -1,35 +1,31 @@
-function initialize() {
-  var bangalore = { lat: 12.97, lng: 77.59 };
-  var map = new google.maps.Map(document.getElementById('mapcont'), {
-    zoom: 12,
-    center: bangalore
-  });
+ 
+ 
+var geocoder;
+var map;
+var marker;
+ 
+function initialize(){
+//Определение карты
+  var latlng = new google.maps.LatLng(56.329917,44.009191999999985);
+  var options = {
+    zoom: 15,
+    center: latlng,
+    mapTypeId: google.maps.MapTypeId.SATELLITE
+  };
+ 
+  map = new google.maps.Map(document.getElementById("map_add"), options);
 
-  // Ця функція викликає addMarker, коли буден нажата кнопка мишки.
-  google.maps.event.addListener(map, 'click', function(event) {
-    addMarker(event.latLng, map);
+  marker = new google.maps.Marker({
+    map: map,
+    draggable: true
   });
+ 
 }
-
-// Adds a marker to the map.
-function addMarker(location, map) {
-  // Add the marker at the clicked location, and add the next-available label
-  // from the array of alphabetical characters.
-  var marker = new google.maps.Marker({
-    position: location,
-	map: map
-  });
-}
-
-
-google.maps.event.addDomListener(window, 'load', initialize);
-
-s
-google.maps.event.addDomListener(window, 'load', initMap);
-google.maps.event.addListener(marker, 'dragend', function (event) {
-    document.getElementById("latbox").value = this.getPosition().lat();
-    document.getElementById("lngbox").value = this.getPosition().lng();
+ 
+$(document).ready(function() { 
+ 
+  initialize();
+ 
+  
 });
-
-
-
+ 
