@@ -18,8 +18,9 @@
 	$title = '';
 	$template = '';
 	
+	$explode  = explode('?', $url);
 	
-	switch ($url) {
+	switch ($explode[0]) {
 	
 			case '/':
 				$template = 'posters';

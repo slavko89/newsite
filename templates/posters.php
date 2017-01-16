@@ -1,19 +1,24 @@
-﻿					
+﻿<?php 
+$status = (isset($_GET['status']) && is_array($_GET['status'])) ? $_GET['status'] : [];
+//$status = $_GET['status'];
+//d($status);
+?>
+					
 <div id="wrapper" class="container">
 	<div id="category" class="row">
 		<div id="featured" class="col-md-12">
 			<div class="col-md-2"  >
-				<form id="filtr" method="POST">
+				<form id="filtr" method="GET">
 					<legend>Пошук</legend>
-					<label><input type="checkbox" name="status[]" value=1>Знайдені</label></br>
-					<label><input type="checkbox" name="status[]" value=0>Незнайдені</label></br>
+					<label><input type="checkbox" name="status[]" value="1" <?= (in_array(1, $status)) ? 'checked="checked"' : ''?>>Знайдені</label></br>
+					<label><input type="checkbox" name="status[]" value="0" <?= (in_array(0, $status)) ? 'checked="checked"' : ''?>>Незнайдені</label></br>
 					<input type="submit" id="search" value="Пошук" class="btn btn-primary btn-sm"></br>
 					</br>
 				</form>
 			</div>
 			<div class="row col-md-10" >
 				<?php 
-					$list  = Posters::getList($_POST['status']);
+					$list  = Posters::getList($_GET['status']);
 					if(!empty($list[0])){
 						foreach($list as $v){ 
 							$data = Posters::getDataPosters($v);

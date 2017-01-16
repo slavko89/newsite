@@ -33,9 +33,8 @@ $errors = isset($errors) ? $errors : [];
 					
 						<select name="animal_id" id="animal_id" class="form-control">
 							<option value="">- Виберіть вид тварини -</option>
-							<?php foreach (Animal::getList() as $k=>$v):?>
-							
-								<option value="<?=$k?>"><?=$v?></option>
+							<?php foreach (Animal::getList() as $k=>$v):?>							
+								<option value="<?=$k?>" <?= ($k==$list['animal_id'])?'selected="selected"':''?>><?=$v?></option>
 							<?php endforeach?>
 						</select>
 						<?= form_error('animal_id', $errors)?>
@@ -45,8 +44,12 @@ $errors = isset($errors) ? $errors : [];
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Порода</label>
 					<div class="col-sm-8">
-						<select name="breed_id" id="breed_id" disabled="disabled" class="form-control">
+						<select name="breed_id" id="breed_id" class="form-control">
 							<option value="0">- Виберіть породу -</option>
+							<?php foreach (Animal::getListBreed($list['animal_id']) as $k=>$v):?>
+							<option value="<?= $k?>" <?= ($k==$list['breed_id'])?'selected="selected"':''?>><?= $v?></option>
+							<?php endforeach;?>
+							
 						</select>
 						<?= form_error('breed_id', $errors)?>
 					</div>
