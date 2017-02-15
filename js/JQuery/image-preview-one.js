@@ -30,6 +30,13 @@
 	  alert("ура");
    });
   
+   $(".js-remove-uploaded-image").on("click", function(e){
+	  _self = $(this); 
+	  e.preventDefault(e);
+	  $('#js-data-deleted-img-id').append('<input type="hidden" value="'+_self.data('id')+'" name="delete_img_ids[]">');
+	  _self.closest('.col-md-2').remove();
+   });
+  
 
     
 		

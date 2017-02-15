@@ -3,7 +3,7 @@
 $list  = Db::findOne('poster',  ['id'=>$_GET['id']]);
 $list_image = Db::findAll('poster_foto',  ['animal_id'=>$_GET['id']]);
 $errors = isset($errors) ? $errors : [];
-
+//d($list_image);
 ?>				
 				
 	<div id="map-outer" class="col-md-12">
@@ -89,14 +89,19 @@ $errors = isset($errors) ? $errors : [];
 					
 				</div>
 				<hr>
+				
+				<div id="js-data-deleted-img-id">
+					
+				</div>
+				
 				<div class="form-group">
 				<label for="images-edit" class="col-sm-2 control-label"></label>
 					
 					<?php foreach($list_image as $k=>$img):?>
 					<div class="col-md-2">
-						<div id="image-edit">
+						<div class="image-edit">
 							<img src="../image/Data/upload/<?=$img["url"]?>" class="one">
-							<a href='#'><img src="../image/delete.png" width=15% class="two"></a>
+							<a href='#' data-id="<?= $img['id']?>" class="js-remove-uploaded-image"><img src="../image/delete.png" width=15% class="two"></a>
 						</div>
 					</div>
 					<?php endforeach;?>	
@@ -127,3 +132,4 @@ $errors = isset($errors) ? $errors : [];
 	<script src="/js/GoogleMapsApi/google_maps_edit.js"></script>			
 		
 		
+<script src="/js/JQuery/image-preview-one.js"></script>	
