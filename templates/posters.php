@@ -1,21 +1,4 @@
-<<<<<<< HEAD
-﻿<?php
-$status = (isset($_GET['status']) && is_array($_GET['status'])) ? $_GET['status'] :[];
-$animal = Db::findAll('animal');
-
-?>				
-<div id="wrapper" class="container">
-	<div id="category" class="row">
-		<div id="featured" class="col-md-12">
-			<div class="col-md-2"  id="box-content">
-			<legend>Фільтер</legend>
-				<form id="filtr" method="GET">
-					<span style="font-size: 20px; color: #286091;">Статус</span>
-					<legend></legend>
-					<label><input type="checkbox" name="status[]" value="1" <?= in_array("1", $status) ? 'checked="checked"': "" ?>>Знайдені</label></br>
-					<label><input type="checkbox" name="status[]" value="0" <?= in_array("0", $status) ? 'checked="checked"': "" ?>>Незнайдені</label></br>
-=======
-﻿<?php 
+<?php 
 $status = (isset($_GET['status']) && is_array($_GET['status'])) ? $_GET['status'] : [];
 //$status = $_GET['status'];
 //d($status);
@@ -29,7 +12,6 @@ $status = (isset($_GET['status']) && is_array($_GET['status'])) ? $_GET['status'
 					<legend>Пошук</legend>
 					<label><input type="checkbox" name="status[]" value="1" <?= (in_array(1, $status)) ? 'checked="checked"' : ''?>>Знайдені</label></br>
 					<label><input type="checkbox" name="status[]" value="0" <?= (in_array(0, $status)) ? 'checked="checked"' : ''?>>Незнайдені</label></br>
->>>>>>> b07705031ce4d6dae545e7511bb9be5929c2178e
 					<input type="submit" id="search" value="Пошук" class="btn btn-primary btn-sm"></br>
 					</br>
 				</form>
@@ -47,10 +29,6 @@ $status = (isset($_GET['status']) && is_array($_GET['status'])) ? $_GET['status'
 			</div>
 			<div class="row col-md-10" >
 				<?php 
-<<<<<<< HEAD
-				
-=======
->>>>>>> b07705031ce4d6dae545e7511bb9be5929c2178e
 					$list  = Posters::getList($_GET['status']);
 					if(!empty($list[0])){
 						foreach($list as $v){ 

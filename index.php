@@ -18,12 +18,8 @@
 	$title = '';
 	$template = '';
 	
-<<<<<<< HEAD
-	$explode = explode("?" , $url);
-=======
 	$explode  = explode('?', $url);
-	
->>>>>>> b07705031ce4d6dae545e7511bb9be5929c2178e
+
 	switch ($explode[0]) {
 	
 			case '/':
