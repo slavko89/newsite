@@ -102,7 +102,7 @@ class Validation {
 		}
 	}
 	
-		public function numberPhone($checkAttributes, $valueAttributes)
+	public function numberPhone($checkAttributes, $valueAttributes)
 	{
 		foreach ($checkAttributes as $attribute) {
 			if(!preg_match("/^[0-9]{10,10}+$/", $valueAttributes[$attribute])){

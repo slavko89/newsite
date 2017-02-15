@@ -115,6 +115,33 @@ class Db{
 		return $data;			
 	}
 	
+	public static function findAllOR($tableName, $attributes = []){
+		
+		$pattern = 'SELECT * FROM %s WHERE %s ';
+		
+		$lines = [];
+		foreach ($attributes as $k=>$v) {
+			foreach($v as $val){
+				$lines[] = sprintf('%s = %s', $k, $val);
+			}
+			
+		}
+		
+		$or 	= implode(' OR ', $lines);
+		
+		$sql 	= sprintf($pattern, $tableName, $or);
+		
+		$data = [];
+        $result = mysql_query($sql);
+        
+		$row = mysql_fetch_assoc($result);
+		do{
+			$data[] = $row; 
+		} while($row = mysql_fetch_assoc($result));
+		
+		return $data;			
+	}
+	
 }
 	
 

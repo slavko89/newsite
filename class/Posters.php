@@ -3,14 +3,18 @@
 class Posters{
 	
 	public static function getList($is_active){
-		if(!isset($is_active)){
-			$list  = Db::findAll('poster');
-		}else if (isset($is_active) && !isset($is_active[1])){
-			$list  = Db::findAll('poster', ['is_active'=>$is_active[0]]);
+	
+	if(isset($is_active)){
+		if($is_active[0] == 1 || $is_active[0] == 0){
+			$list = Db::findAllOR('poster',['is_active'=>$is_active]);
 		}else {
-			$list  = Db::findAll('poster');
+			$list = Db::findAllOR('poster',['animal_id'=>$is_active]);
 		}
-		
+	} else {
+		$list = Db::findAll('poster');
+	}
+	
+	
 		return $list;
 	}
 	

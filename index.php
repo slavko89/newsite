@@ -18,8 +18,8 @@
 	$title = '';
 	$template = '';
 	
-	
-	switch ($url) {
+	$explode = explode("?" , $url);
+	switch ($explode[0]) {
 	
 			case '/':
 				$template = 'posters';
@@ -36,9 +36,9 @@
 				$title = 'Мої оголошення';
 				break;
 				
-			case '/maps':
-				$template = 'maps';
-				$title = 'Головна сторінка';
+			case '/map':
+				$template = 'map';
+				$title = 'Перегляд тварин';
 				break;
 			case '/posterView':
 				$template = 'posterView';
@@ -110,25 +110,21 @@
 		<meta name="viewport" content="initial-scale=1.0">
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="styles/style.css">
+		<link rel="stylesheet" href="styles/style_images.css">
 		<link rel="stylesheet" href="styles/bootstrap.min.css">
 		<link rel="stylesheet" href="styles/bootstrap-theme.min.css">
-		<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="/image/Search.ico" type="image/x-icon">
+	
 		
-		<script type="text/javascript"
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTfKDUH2KkHaXkoOYH5exE_eo-a9v6Sw&sensor=false">
-		</script>
+		
 		<script src="/js/jquery-3.1.1.js"></script>
-	    <script src="/js/selects.js"></script>
-		<script src="/js/sendMail.js"></script>
+	    <script src="/js/JQuery/selects.js"></script>
+		<script src="/js/JQuery/sendMail.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/delete-poster.js"></script>
-		<script src="/js/change-status.js"></script>
-
-
+		<script src="/js/JQuery/delete-poster.js"></script>
+		<script src="/js/JQuery/change-status.js"></script>
 		
-
-
-		
+			
 	</head>
 	
 	<body>
@@ -154,6 +150,7 @@
 				</div>	
 				
 					<?php else:?>
+
 				<div class="col-md-4" id="registration">
 					<a href="/login" id="input" >Вхід</a>
 					|
@@ -170,7 +167,7 @@
 							<ul class="nav navbar-nav">
 								<li><a href="/posters">Головна</a></li>
 								<li class="divider-vertical"></li>
-								<li><a href="/maps">Карта</a></li>
+								<li><a href="/map">Пошук на карті</a></li>
 								<li class="divider"></li>
 								<?php  if(is_login()):?>
 								<li><a href="/animalsAdd">Добавити оголошення</a></li>
@@ -188,12 +185,25 @@
 			
 			<div class="row" >
 				<div class="col-md-12" id = "footer">
-					<center><h2>&copy; Славік Іванюра</h2></center>
+					
+					<script type="text/javascript">(function() {
+						  if (window.pluso)if (typeof window.pluso.start == "function") return;
+						  if (window.ifpluso==undefined) { window.ifpluso = 1;
+							var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+							s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+							s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+							var h=d[g]('body')[0];
+							h.appendChild(s);
+						  }})();
+					</script>
+<div class="pluso" data-background="transparent" data-options="big,square,line,horizontal,counter,theme=01" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print"></div>
+				<center><h2>&copy; Славік Іванюра</h2></center>
 				</div>
+				
 			</div>
 		</div>	
-	 	
-		<script src="/js/google_maps_add.js"></script>
-		<script src="/js/google_maps_adit.js"></script>
+		
+
+		
 	</body>
 </html>

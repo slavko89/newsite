@@ -5610,7 +5610,7 @@ jQuery.fn.extend({
 
 			// Otherwise, build a param string
 			} else if ( typeof params === "object" ) {
-				params = jQuery.param( params, jQuery.ajaxSettings.traditional );
+				params = jQuery.param( params, jQuery.ajaxSettings.trposter_fotoional );
 				type = "POST";
 			}
 		}
@@ -5743,7 +5743,7 @@ jQuery.extend({
 		data: null,
 		username: null,
 		password: null,
-		traditional: false,
+		trposter_fotoional: false,
 		*/
 		// This function can be overriden by calling jQuery.ajaxSetup
 		xhr: function() {
@@ -5770,7 +5770,7 @@ jQuery.extend({
 
 		// convert data if not already a string
 		if ( s.data && s.processData && typeof s.data !== "string" ) {
-			s.data = jQuery.param( s.data, s.traditional );
+			s.data = jQuery.param( s.data, s.trposter_fotoional );
 		}
 
 		// Handle JSONP Parameter Callbacks
@@ -6071,7 +6071,7 @@ jQuery.extend({
 
 	// Serialize an array of form elements or a set of
 	// key/values into a query string
-	param: function( a, traditional ) {
+	param: function( a, trposter_fotoional ) {
 		var s = [],
 			add = function( key, value ) {
 				// If value is a function, invoke it and return its value
@@ -6079,9 +6079,9 @@ jQuery.extend({
 				s[ s.length ] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
 			};
 		
-		// Set traditional to true for jQuery <= 1.3.2 behavior.
-		if ( traditional === undefined ) {
-			traditional = jQuery.ajaxSettings.traditional;
+		// Set trposter_fotoional to true for jQuery <= 1.3.2 behavior.
+		if ( trposter_fotoional === undefined ) {
+			trposter_fotoional = jQuery.ajaxSettings.trposter_fotoional;
 		}
 		
 		// If an array was passed in, assume that it is an array of form elements.
@@ -6092,10 +6092,10 @@ jQuery.extend({
 			});
 			
 		} else {
-			// If traditional, encode the "old" way (the way 1.3.2 or older
+			// If trposter_fotoional, encode the "old" way (the way 1.3.2 or older
 			// did it), otherwise encode params recursively.
 			for ( var prefix in a ) {
-				buildParams( prefix, a[prefix], traditional, add );
+				buildParams( prefix, a[prefix], trposter_fotoional, add );
 			}
 		}
 
@@ -6104,11 +6104,11 @@ jQuery.extend({
 	}
 });
 
-function buildParams( prefix, obj, traditional, add ) {
+function buildParams( prefix, obj, trposter_fotoional, add ) {
 	if ( jQuery.isArray(obj) && obj.length ) {
 		// Serialize array item.
 		jQuery.each( obj, function( i, v ) {
-			if ( traditional || rbracket.test( prefix ) ) {
+			if ( trposter_fotoional || rbracket.test( prefix ) ) {
 				// Treat each array item as a scalar.
 				add( prefix, v );
 
@@ -6120,18 +6120,18 @@ function buildParams( prefix, obj, traditional, add ) {
 				// a server error. Possible fixes are to modify rack's
 				// deserialization algorithm or to provide an option or flag
 				// to force array serialization to be shallow.
-				buildParams( prefix + "[" + ( typeof v === "object" || jQuery.isArray(v) ? i : "" ) + "]", v, traditional, add );
+				buildParams( prefix + "[" + ( typeof v === "object" || jQuery.isArray(v) ? i : "" ) + "]", v, trposter_fotoional, add );
 			}
 		});
 			
-	} else if ( !traditional && obj != null && typeof obj === "object" ) {
+	} else if ( !trposter_fotoional && obj != null && typeof obj === "object" ) {
 		if ( jQuery.isEmptyObject( obj ) ) {
 			add( prefix, "" );
 
 		// Serialize object item.
 		} else {
 			jQuery.each( obj, function( k, v ) {
-				buildParams( prefix + "[" + k + "]", v, traditional, add );
+				buildParams( prefix + "[" + k + "]", v, trposter_fotoional, add );
 			});
 		}
 					

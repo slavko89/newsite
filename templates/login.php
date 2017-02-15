@@ -39,6 +39,8 @@ $errors = isset($errors) ? $errors : [];
 			</div>
 		</div>
 	</form>
+	
+	
 	<div class="col-md-6">
 		<img src="/image/cats.jpg" width="400" height="300">
 	</div>	

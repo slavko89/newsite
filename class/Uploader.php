@@ -23,8 +23,9 @@ class Uploader {
 
 		foreach ($attributes as $k=>$v) {
 			if (property_exists($this, $k)) {
-				$this->{$k} = $v;					
-			}				
+				$this->{$k} = $v;
+			}
+					
 		}
 			
 		$this->valid();
@@ -33,31 +34,20 @@ class Uploader {
 	
 	function checkSizeFile() 
 	{
-		if ($this->size <= 1024*1024*2) {
+		if ($this->size <= 1024*300) {
 			return true;
 		} else {
-			$this->errors[] = 'Файл "'.$this->name.'" займає більше 2 мбайт';
+			$this->errors[] = "Файл '".$this->name."' займає більше 300 кбайт </br>";
 			return false;
 		}
 	}
 
-	function checkSizeImage() 
-	{		
-		$image_size = getimagesize($this->tmp_name);
-		if ($image_size[0] <= 1024 && $image_size[1] <= 1024){
-			return true;
-		} else {
-			$this->errors[] = 'Розмір файлу "'.$this->name.'" перевищує 1024 х 1024 px ';
-			return false;
-		}
-	}
-	
 	function checkImageType() 
 	{
-		if ($this->type == 'image/jpeg' || 'image/psd') {
+		if ($this->type == 'image/jpeg' || 'image/psd' || 'image/png' || 'image/jpg') {
 			return true;
 		} else {
-			$this->errors[] = 'Тип файлу "'.$this->name. '" не є jpg';
+			$this->errors[] = 'Тип файлу "'.$this->name. '" не є картинка </br>';
 			return false;
 		}
 	}

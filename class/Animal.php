@@ -45,63 +45,60 @@ class Animal{
 		if (empty($this->errors)){
 			// 1) Validation images
             // 2) Insert animal
-            // 3) insert photos			
-			$imagesAttrs = [];
-			foreach ($_FILES['file'] as $file_attr => $attr_values) {
-				foreach ($attr_values as $num_img => $val) {
-					$imagesAttrs[$num_img][$file_attr] = $val;
+            // 3) insert photos	
+			
+			
+			
+			if($_FILES[0]['name'] != ""){
+							
+				foreach ($_FILES as $attrs) {
+					
+					$errors = Uploader::getInstence()->validate($attrs)->errors;
+					if (!empty($errors)) {
+						$stringError = $stringError.$errors[0]."\n";
+					}
 				}
-			}
+				$this->errors['file'] = $stringError;
+			}else{
+				$this->errors['file'] = "Додайте хоча б одну фотографію";
+				
+			}		
 			
-			foreach ($imagesAttrs as $attrs) {
-				$errors = Uploader::getInstence()->validate($attrs)->errors;
-				if (!empty($errors)) {
-				    $this->errors['file'][] = $errors;
-					$stringError = $stringError.$errors[0]."\n";
-				}
-			}
 			
-			$this->errors['file'] = $stringError;
+			if(empty($this->errors['file'])){
 			
-			if(empty($this->errors['file']) && $_FILES['file']['error'][0] == 0){
-					$coordinates = Db::insert('coordinates', [
-						'lat'	=> $lat,
-						'lng'	=> $lng
-					]);
-					$latlng = Db::findOne('coordinates', [
-						'lat'	=> $lat,
-						'lng'	=> $lng
-						
-					]); 
 					$poster = Db::insert('poster', [
-						'title'					=> $title,
-						'name'					=> $name,
-						'animal_id'				=> $animal_id,
-						'breed_id' 				=> $breed_id,
-						'description'			=> $description,
-						'address' 				=> $address,
-						'date'					=> time(),
-						'user_id'				=> $_SESSION['uid'],
-						'coordinates_id'		=> $latlng['id']
+						'title'			=> $title,
+						'name'			=> $name,
+						'animal_id'		=> $animal_id,
+						'breed_id' 		=> $breed_id,
+						'description'	=> $description,
+						'address' 		=> $address,
+						'date'			=> time(),
+						'user_id'		=> $_SESSION['uid'],
+						'lat'			=> $lat,
+						'lng'			=> $lng
 					]);
 								
-					$rows = Db::findOne('poster', [
-						'name'				=> $name,
-						'animal_id'			=> $animal_id,
-						'breed_id' 			=> $breed_id,
-						'description'		=> $description,
-						'address' 			=> $address,
+					$row = Db::findOne('poster', [
+						'name'			=> $name,
+						'animal_id'		=> $animal_id,
+						'breed_id' 		=> $breed_id,
+						'description'	=> $description,
+						'address' 		=> $address,
 					]);
 				
-				foreach ($imagesAttrs as $attrs) {
-					Uploader::getInstence()->upload($attrs,$path);
-					Db::insert('poster_foto', [
-						'url'			=> $path.'/'.$attrs['name'],
-						'animal_id'		=> $rows['id']
-			
-					]);
+				foreach ($_FILES as $attrs) {
+					if($attrs['error'] == 0){
+						Uploader::getInstence()->upload($attrs,$path);
+						Db::insert('poster_foto', [
+							'url'			=> $path.'/'.$attrs['name'],
+							'animal_id'		=> $row['id']
+				
+						]);
+					}
 				}
-				setFlash('sucess', 'Тварина добавлена на карту!!!');
+				setFlash('sucess', 'Ваше оголошення успішно додано!');
 				return $this;
 			}
 		}	
@@ -109,30 +106,7 @@ class Animal{
 		return $this;
 	}
 	
-    public static function getList()
-	{
-		$list = [];
-        $result = mysql_query("SELECT `id`, `title` FROM `animal`");
-        
-		$row = mysql_fetch_assoc($result);
-		do{
-			$list[$row['id']] = $row['title']; 
-		} while($row = mysql_fetch_assoc($result));
-		
-        return $list;		
-    }
-	
-	public static function getListBreed($animalId)
-	{
-		$list = [];
-        $result = Db::findAll('animal_breed',  ['animal_id'=>$animalId]);
-          
-		foreach ($result as $item) {
-		    $list[$item['id']] = $item['title'];	
-		}  
-
-        return $list;		
-    }
+    
 	
 	public function update($formAttribues)
 	{
@@ -175,22 +149,44 @@ class Animal{
 						'breed_id' 				=> $breed_id,
 						'description'			=> $description,
 						'address' 				=> $address,
+						'lat'					=> $lat,
+						'lng'					=> $lng
 						
 					],$_GET['id']);
 					
-				$coordinates = Db::update('coordinates', [
-					'lat'	=> $lat,
-					'lng'	=> $lng
-				],$rows['coordinates_id']);
-				setFlash('sucess', 'Тварина добавлена на карту!!!');
+				setFlash('sucess', 'Дані успішно відредаговані');
 				return $this;
 			}
-		
-			
-		
-    
+
 		return $this;
 	}
+	public static function getList()
+	{
+		$list = [];
+        $result = mysql_query("SELECT `id`, `title` FROM `animal`");
+        
+		$row = mysql_fetch_assoc($result);
+		do{
+			$list[$row['id']] = $row['title']; 
+		} while($row = mysql_fetch_assoc($result));
+		
+        return $list;		
+    }
+	
+	public static function getListBreed($animalId)
+	{
+		$list = [];
+        $result = Db::findAll('animal_breed',  ['animal_id'=>$animalId]);
+          
+		foreach ($result as $item) {
+		    $list[$item['id']] = $item['title'];	
+		}  
+
+        return $list;		
+    }
 }
+
+
+	
 
 ?>
