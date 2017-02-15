@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<?php
 $status = (isset($_GET['status']) && is_array($_GET['status'])) ? $_GET['status'] :[];
 $animal = Db::findAll('animal');
@@ -13,6 +14,22 @@ $animal = Db::findAll('animal');
 					<legend></legend>
 					<label><input type="checkbox" name="status[]" value="1" <?= in_array("1", $status) ? 'checked="checked"': "" ?>>Знайдені</label></br>
 					<label><input type="checkbox" name="status[]" value="0" <?= in_array("0", $status) ? 'checked="checked"': "" ?>>Незнайдені</label></br>
+=======
+﻿<?php 
+$status = (isset($_GET['status']) && is_array($_GET['status'])) ? $_GET['status'] : [];
+//$status = $_GET['status'];
+//d($status);
+?>
+					
+<div id="wrapper" class="container">
+	<div id="category" class="row">
+		<div id="featured" class="col-md-12">
+			<div class="col-md-2"  >
+				<form id="filtr" method="GET">
+					<legend>Пошук</legend>
+					<label><input type="checkbox" name="status[]" value="1" <?= (in_array(1, $status)) ? 'checked="checked"' : ''?>>Знайдені</label></br>
+					<label><input type="checkbox" name="status[]" value="0" <?= (in_array(0, $status)) ? 'checked="checked"' : ''?>>Незнайдені</label></br>
+>>>>>>> b07705031ce4d6dae545e7511bb9be5929c2178e
 					<input type="submit" id="search" value="Пошук" class="btn btn-primary btn-sm"></br>
 					</br>
 				</form>
@@ -30,7 +47,10 @@ $animal = Db::findAll('animal');
 			</div>
 			<div class="row col-md-10" >
 				<?php 
+<<<<<<< HEAD
 				
+=======
+>>>>>>> b07705031ce4d6dae545e7511bb9be5929c2178e
 					$list  = Posters::getList($_GET['status']);
 					if(!empty($list[0])){
 						foreach($list as $v){ 
